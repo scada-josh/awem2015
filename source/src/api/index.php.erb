@@ -1,0 +1,119 @@
+---
+title: MWA Academic Fun Fest - API
+layout: "layout-api"
+---
+
+<?php
+    date_default_timezone_set("Asia/Bangkok");
+
+    require_once '../../packages/autoload.php';
+
+
+    $dsn = "mysql:dbname=rmr_db;host=localhost;charset=UTF8";
+    $username = "root";
+    $password = "";
+    $pdo = new PDO($dsn, $username, $password);
+    $db = new NotORM($pdo);
+
+    // $dsn_election_db = "mysql:dbname=mwa_election;host=localhost;charset=UTF8";
+    // $pdo_election_db = new PDO($dsn_election_db, $username, $password);
+    // $db_election_db = new NotORM($pdo_election_db);
+
+    // $dsn = "mysql:dbname=mwa_academic_week;host=localhost;charset=UTF8";
+    // $username = "root";
+    // $password = "aaa";
+    // $pdo = new PDO($dsn, $username, $password);
+    // $db = new NotORM($pdo);
+
+
+
+    /* Slim framework */
+    $app = new \Slim\Slim();
+
+    // $corsOptions = array(
+    //     "origin" => "*",
+    //     "exposeHeaders" => array("X-My-Custom-Header", "X-Another-Custom-Header"),
+    //     "maxAge" => 1728000,
+    //     "allowCredentials" => True,
+    //     "allowMethods" => array("POST, GET"),
+    //     "allowHeaders" => array("X-PINGOTHER")
+    // );
+
+
+    /* CorsSlim is added */
+    // $app->add(new \CorsSlim\CorsSlim($corsOptions));
+
+
+
+
+    /**
+     *
+     * @apiName HelloWorld
+     * @apiGroup TEST SERVICE
+     * @apiVersion 0.1.0
+     *
+     * @api {get} /hello/:name Test GET Service (v 0.1.0)
+     * @apiDescription คำอธิบาย : Hello World, Test Service
+     *
+     * localhost : http://localhost/iFire-Reporter-API/src/hello/:name
+     *
+     * remote host : http://128.199.166.211/iFire-Reporter-API/src/hello/:name
+     *
+     * @apiExample Example usage:
+     * "Using Advanced REST Client" : (localhost)   chrome-extension://hgmloofddffdnphfgcellkdfbfbjeloo/RestClient.html#RequestPlace:projectEndpoint/31
+     * "Using Advanced REST Client" : (remote host) chrome-extension://hgmloofddffdnphfgcellkdfbfbjeloo/RestClient.html#RequestPlace:projectEndpoint/30
+     *
+     * @apiParam {String} name     New name of the user
+     *
+     * @apiSampleRequest /hello/:name
+     *
+     * @apiSuccess {String} msg แสดงข้อความทักทายผู้ใช้งาน
+     *
+     * @apiSuccessExample Example data on success:
+     * {
+     *   "msg": "Hello, anusorn"
+     * }
+     *
+     * @apiError UserNotFound The <code>id</code> of the User was not found.
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 404 Not Found
+     *     {
+     *       "error": "UserNotFound"
+     *     }
+     *
+     */
+    $app->get('/hello/:name', function ($name) use ($app) {
+
+        //echo "สวัสดี, $name";
+        $return_m = array("msg" => "สวัสดี, $name");
+
+        $app->response()->header("Content-Type", "application/json");
+        echo json_encode($return_m);
+    });
+
+
+
+
+    /* Login manager */
+    $app->post('/loginManager/checkUserPassword/',function() use ($app, $pdo, $db) { checkUserPassword($app, $pdo, $db); });
+    $app->post('/loginManager/logout/',function() use ($app, $pdo, $db) { logout($app, $pdo, $db); });
+
+
+    // $corsOptions = array("origin" => "*");
+    // $app->post('/loginManager/logout/',\CorsSlim\CorsSlim::routeMiddleware($corsOptions) ,function() use ($app, $pdo, $db) { 
+    //     logout($app, $pdo, $db); 
+    // });
+
+
+
+    
+	
+
+	$app->run();
+
+    /* Login Manager Partial */
+    <%= partial "/LoginManager/_checkUserPassword" %>
+    <%= partial "/LoginManager/_logout" %>
+
+    
+?>
