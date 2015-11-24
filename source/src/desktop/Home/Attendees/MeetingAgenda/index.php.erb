@@ -1,0 +1,42 @@
+---
+title: "Meeting Agenda - วาระการประชุม"
+layout: "layout-home-attendees-meetingAgenda"
+pageTitle: " วาระการประชุม"
+pageDescription: "You can start your customization from this one!"
+
+baseURL: "/awem2015/build/src/desktop/Home/Attendees/MeetingAgenda/"
+loginURL: "../../../Login/index.php"
+imageURL: "../../../../../images"
+
+menuDashboardIsActive: ""
+menuAttendees_IsActive: "active"
+menuAttendees_meetingAgendaIsActive: "active"
+menuAdministrator_IsActive: ""
+menuAdministrator_memberIsActive: ""
+menuAdministrator_accessPolicyIsActive: ""
+
+
+menuHome_Index_href: "../../"
+menuAttendees_meetingAgenda_href: "../../Attendees/MeetingAgenda/"
+menuAdministrator_member_href: "../../Administrator/Member/"
+menuAdministrator_accessPolicy_href: "../../Administrator/AccessPolicy/"
+
+---
+
+        <!-- Admin - Navbar  -->
+        <%= partial partials_desktop_Common_dir + "/_common-navbar" %>
+
+
+        <!-- BEGIN Container -->
+        <div class="container sidebar-blue" id="main-container">
+
+        	<!-- Home - Container - Sidebar collapsed  -->
+        	<%= partial partials_desktop_Common_dir + "/_Common-sidebar-collapsed" %>
+
+            <!-- Home - Container - MainContent  -->
+            <%= partial partials_desktop_home_attendees_meetingAgenda + "/_home-attendees-meetingAgenda-container-mainContent" %>
+
+        </div>
+        <!-- END Container -->
+
+

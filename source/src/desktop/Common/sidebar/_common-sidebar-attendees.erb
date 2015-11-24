@@ -1,0 +1,16 @@
+                    <li class="<%= current_page.data.menuAttendees_IsActive %>">
+                        <a href="#" class="dropdown-toggle">
+                            <!-- <i class="fa fa-desktop"></i> -->
+                            <img  src="<%= current_page.data.imageURL + "/images-flaty_theme/img/awem2015/Icon-attendee.png" %>" />
+                            <span>Attendees</span>
+                            <b class="arrow fa fa-angle-right"></b>
+                        </a>
+
+                        <!-- BEGIN Submenu -->
+                        <ul class="submenu">
+                            <li class="<%= current_page.data.menuAttendees_meetingAgendaIsActive %>">
+                                <a href="<%= current_page.data.menuAttendees_meetingAgenda_href %>">A Meeting Agenda</a>
+                            </li>
+                        </ul>
+                        <!-- END Submenu -->
+                    </li>
