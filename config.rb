@@ -57,6 +57,7 @@ set :images_dir, 'images'
 
 set :helper_dir, 'helper'
 
+set :url_logo_dir, 'images/images-flaty_theme/img/awem2015/Logo.png'
 set :partials_desktop_Common_dir, 'src/desktop/Common'
 set :partials_desktop_Admin_blank_dir, 'src/desktop/Admin/blank'
 set :partials_desktop_Home_index_dir, 'src/desktop/Home'
@@ -128,18 +129,18 @@ configure :build do
   ignore '/stylesheets/hello.scss'
   ignore '/stylesheets/normalize.css'
 
-  ignore '/src/desktop/training-section1/*'
-  ignore '/src/desktop/training-section2/*'
-  ignore '/src/desktop/training-section3/*'
-  ignore '/src/desktop/training-section4/*'
-  ignore '/src/desktop/training-section5/*'
-  ignore '/src/desktop/Admin_2015-11-10/*'
-  ignore '/src/desktop/Admin_2015-11-18/*'
+  # ignore '/src/desktop/training-section1/*'
+  # ignore '/src/desktop/training-section2/*'
+  # ignore '/src/desktop/training-section3/*'
+  # ignore '/src/desktop/training-section4/*'
+  # ignore '/src/desktop/training-section5/*'
+  # ignore '/src/desktop/Admin_2015-11-10/*'
+  # ignore '/src/desktop/Admin_2015-11-18/*'
 
-  ignore '/images/images-training-section2/*'
-  ignore '/images/images-training-section3/*'
-  ignore '/images/images-training-section4/*'
-  ignore '/images/images-training-section5/*'
+  # ignore '/images/images-training-section2/*'
+  # ignore '/images/images-training-section3/*'
+  # ignore '/images/images-training-section4/*'
+  # ignore '/images/images-training-section5/*'
 
   # For example, change the Compass output style for deployment
   # activate :minify_css
