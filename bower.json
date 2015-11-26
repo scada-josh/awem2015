@@ -40,6 +40,8 @@
     "bower-jquery-sparkline": "~2.1.3",
     "angular-route": "~1.4.7",
     "angular-mocks": "~1.4.7",
-    "angular-resource": "~1.4.7"
+    "angular-resource": "~1.4.7",
+    "pubnub": "~3.7.18",
+    "pubnub-angular": "~1.1.0"
   }
 }
