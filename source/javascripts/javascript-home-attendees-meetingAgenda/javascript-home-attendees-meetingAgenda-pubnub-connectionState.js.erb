@@ -1,0 +1,23 @@
+(function(){
+        // listen for messages
+        PUBNUB.subscribe({ 
+            // connect to a channel 
+            channel : "channel_abc", 
+            // resubscribe and reconnect
+            restore : true, 
+            // message received 
+            callback : function() {alert(JSON.stingify(m))}, 
+            //  conneciton lost
+            disconnect : function() {alert("Connection Lost!")}, 
+            // connection restored 
+            reconnect : function() {alert("And we're Back!")}, 
+            // connection established 
+            connect : function() { 
+                // send a message 
+                PUBNUB.publish({ 
+                    channel : "channel_abc", 
+                    message : "Hi from PubNub." 
+                }) 
+            }
+        })
+    })();
