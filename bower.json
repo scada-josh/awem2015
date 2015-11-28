@@ -42,6 +42,7 @@
     "angular-mocks": "~1.4.7",
     "angular-resource": "~1.4.7",
     "pubnub": "~3.7.18",
-    "pubnub-angular": "~1.1.0"
+    "pubnub-angular": "~1.1.0",
+    "jquery.gritter": "~1.7.4"
   }
 }

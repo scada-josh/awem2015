@@ -9,7 +9,7 @@ layout: "layout-api"
     require_once '../../packages/autoload.php';
 
 
-    $dsn = "mysql:dbname=rmr_db;host=localhost;charset=UTF8";
+    $dsn = "mysql:dbname=meeting_tools_db;host=localhost;charset=UTF8";
     $username = "root";
     $password = "";
     $pdo = new PDO($dsn, $username, $password);
@@ -45,53 +45,8 @@ layout: "layout-api"
 
 
 
-
-    /**
-     *
-     * @apiName HelloWorld
-     * @apiGroup TEST SERVICE
-     * @apiVersion 0.1.0
-     *
-     * @api {get} /hello/:name Test GET Service (v 0.1.0)
-     * @apiDescription คำอธิบาย : Hello World, Test Service
-     *
-     * localhost : http://localhost/iFire-Reporter-API/src/hello/:name
-     *
-     * remote host : http://128.199.166.211/iFire-Reporter-API/src/hello/:name
-     *
-     * @apiExample Example usage:
-     * "Using Advanced REST Client" : (localhost)   chrome-extension://hgmloofddffdnphfgcellkdfbfbjeloo/RestClient.html#RequestPlace:projectEndpoint/31
-     * "Using Advanced REST Client" : (remote host) chrome-extension://hgmloofddffdnphfgcellkdfbfbjeloo/RestClient.html#RequestPlace:projectEndpoint/30
-     *
-     * @apiParam {String} name     New name of the user
-     *
-     * @apiSampleRequest /hello/:name
-     *
-     * @apiSuccess {String} msg แสดงข้อความทักทายผู้ใช้งาน
-     *
-     * @apiSuccessExample Example data on success:
-     * {
-     *   "msg": "Hello, anusorn"
-     * }
-     *
-     * @apiError UserNotFound The <code>id</code> of the User was not found.
-     * @apiErrorExample {json} Error-Response:
-     *     HTTP/1.1 404 Not Found
-     *     {
-     *       "error": "UserNotFound"
-     *     }
-     *
-     */
-    $app->get('/hello/:name', function ($name) use ($app) {
-
-        //echo "สวัสดี, $name";
-        $return_m = array("msg" => "สวัสดี, $name");
-
-        $app->response()->header("Content-Type", "application/json");
-        echo json_encode($return_m);
-    });
-
-
+    /* Hello World manager */
+    $app->get('/helloWorldManager/hello/:name',function($name) use ($app) { hello($app, $name); });
 
 
     /* Login manager */
@@ -99,21 +54,25 @@ layout: "layout-api"
     $app->post('/loginManager/logout/',function() use ($app, $pdo, $db) { logout($app, $pdo, $db); });
 
 
-    // $corsOptions = array("origin" => "*");
-    // $app->post('/loginManager/logout/',\CorsSlim\CorsSlim::routeMiddleware($corsOptions) ,function() use ($app, $pdo, $db) { 
-    //     logout($app, $pdo, $db); 
-    // });
+    /* Ask manager */
+    $app->post('/askManager/insertAsk/',function() use ($app, $pdo, $db) { insertAsk($app, $pdo, $db); });
+    $app->post('/askManager/listAsk/',function() use ($app, $pdo, $db) { listAsk($app, $pdo, $db); });
 
-
-
-    
-	
 
 	$app->run();
+
+
+
+    /* Hello World Manager Partial */
+    <%= partial "/HelloWorldManager/_hello" %>
 
     /* Login Manager Partial */
     <%= partial "/LoginManager/_checkUserPassword" %>
     <%= partial "/LoginManager/_logout" %>
+
+    /* Ask Manager Partial */
+    <%= partial "/AskManager/_insertAsk" %>
+    <%= partial "/AskManager/_listAsk" %>
 
     
 ?>

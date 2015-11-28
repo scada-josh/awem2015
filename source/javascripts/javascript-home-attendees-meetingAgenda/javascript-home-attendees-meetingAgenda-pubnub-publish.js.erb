@@ -30,17 +30,17 @@
 pubnub.here_now({
     channel : 'askTheSpeaker',
     callback : function(m){
-      console.log("here_now : " + m)
+      //console.log("here_now : " + m)
     }
 });
 
 pubnub.subscribe({
     channel: "askTheSpeaker",
     presence: function(m){
-      console.log("subscribe - presence : " + m)
+      //console.log("subscribe - presence : " + m)
     },
     message: function(m){
-      console.log("subscribe - message : " + m)
+      //console.log("subscribe - message : " + m)
     }
 });
 
@@ -49,11 +49,21 @@ pubnub.subscribe({
     // resubscribe and reconnect
     restore : true, 
     // message received 
-    callback : function() {console.log(JSON.stingify(m))}, 
+    callback : function() {
+        //console.log(JSON.stingify(m))
+    }, 
     //  conneciton lost
-    disconnect : function() {console.log("Connection Lost!")}, 
+    disconnect : function() {
+        //console.log("Connection Lost!")
+        $('#btnAskTheSpeaker').attr('disabled' , true);
+        gritterAdd();
+    }, 
     // connection restored 
-    reconnect : function() {console.log("And we're Back!")},
+    reconnect : function() {
+        //console.log("And we're Back!")
+        $('#btnAskTheSpeaker').attr('disabled' , false);
+        gritterRemoveAll();
+    },
     // connection established 
     connect : function() { 
         // send a message 
@@ -91,8 +101,8 @@ pubnub.subscribe({
 pubnub.history({
      channel: 'askTheSpeaker',
      callback: function(m){
-        console.log("history");
-        console.log(JSON.stringify(m))
+        //console.log("history");
+        //console.log(JSON.stringify(m))
     },
      count: 100, // 100 is the default
      reverse: false // false is the default

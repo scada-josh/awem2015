@@ -1,0 +1,102 @@
+	/**
+	 *
+	 * @apiName InsertAsk
+	 * @apiGroup ASK Manager
+	 * @apiVersion 0.1.0
+	 *
+	 * @api {post} /askManager/insertAsk/ Insert ASK
+	 * @apiDescription คำอธิบาย : ในส่วนนี้จะมีหน้าที่เพิ่มคำถามเข้าไปในระบบ
+	 *
+	 *
+	 * @apiSampleRequest /askManager/insertAsk/
+	 *
+	 * @apiSuccess {String} msg แสดงข้อความทักทายผู้ใช้งาน
+	 *
+	 * @apiSuccessExample Example data on success:
+	 * {
+	 *   "msg": "Hello, anusorn"
+	 * }
+	 *
+	 * @apiError UserNotFound The <code>id</code> of the User was not found.
+	 * @apiErrorExample {json} Error-Response:
+	 *     HTTP/1.1 404 Not Found
+	 *     {
+	 *       "error": "UserNotFound"
+	 *     }
+	 *
+	 */
+	 function insertAsk($app, $pdo, $db) {
+
+	 	/* ************************* */
+        /* เริ่มกระบวนการรับค่าพารามิเตอร์จากส่วนของ Payload ซึ่งอยู่ในรูปแบบ JSON */
+        /* ************************* */
+        $headers = $app->request->headers;
+        $ContetnType = $app->request->headers->get('Content-Type');
+
+        /**
+        * apidoc @apiSampleRequest, iOS RESTKit use content-type is "application/json"
+        * Web Form, Advance REST Client App use content-type is "application/x-www-form-urlencoded"
+        */
+        if ($ContetnType == "application/json") {
+
+	        $request = $app->request();
+	        $result = json_decode($request->getBody());
+
+	        /* receive request */
+	        $postAgendaID = $result->agendaID;
+	        $postUserName = $result->userName;
+	        $postUserDisplay = $result->userDisplay;
+	        $postMessageDisplay = $result->messageDisplay;
+
+
+		} else if ($ContetnType == "application/x-www-form-urlencoded"){
+
+		    //$userID = $app->request()->params('userID_param');
+		    //$userID = $app->request()->post('userID_param');
+		}
+
+		/* ************************* */
+	 	/* เริ่มกระบวนการเชื่อมต่อกับฐานข้อมูล MySQL */
+	 	/* ************************* */
+	 	$reports = array();
+
+   		$query_result = $db->ask_tb->insert(array(
+		    "agenda_id" => $postAgendaID,
+		    "user_name" => $postUserName,
+		    "user_display" => $postUserDisplay,
+		    "message_display" => $postMessageDisplay
+		));
+
+
+
+		$results = $db->ask_tb->where("agenda_id = ?", $postAgendaID)->order("creation_time ASC");
+
+		foreach ($results as $result) {
+			$reports[] = array(
+				"id" => $result["id"],
+				"agenda_id" => $result["agenda_id"],
+				"user_name" => $result["user_name"],
+				"user_display" => $result["user_display"],
+				"creation_time" => $result["creation_time"],
+				"message_display" => $result["message_display"]
+				);
+		}
+
+		$rowCount = count($results);
+
+		/* ************************* */
+	    /* เริ่มกระบวนการส่งค่ากลับ */
+	    /* ************************* */
+	    $resultText = "success";
+	    
+		$reportResult = array("result" =>  $resultText, "count"=>$rowCount, "rows" => $reports);
+
+	  	// $return_m = array(
+	  	// 					"queryResult" => $query_result
+	  	// 				);
+	  	
+	  	$app->response()->header("Content-Type", "application/json");
+	    echo json_encode($reportResult);
+
+	 }
+	 

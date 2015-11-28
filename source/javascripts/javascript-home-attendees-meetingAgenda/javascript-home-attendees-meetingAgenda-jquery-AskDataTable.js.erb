@@ -1,0 +1,135 @@
+//------------------------ ASK Data Table -----------------------//
+if (jQuery().dataTable) {
+
+    var postData = {
+                        "agendaID": "agenda-0001-0001"
+                     }
+
+    var AskDataTable = $('#AskDataTable').DataTable( {
+         "processing": true,
+        // "serverSide": true,
+        scrollY: '40vh',
+        scrollCollapse: true,
+        "ajax": {
+            "url": "../../../../api/askManager/listAsk/",
+            "type": "POST",
+            //"dataType": "json",
+            "data"   : function( d ) {
+              d.agendaID = "agenda-0001-0001";
+            },
+            "dataSrc": "rows",
+            // "success": function(data) {
+            //     console.log(data);
+            // },
+            // "error": function(jqXHR, textStatus, errorThrown){
+            //     alert('init error: ' + textStatus);
+            // }
+        },
+        "columns": [
+            { "data": "id"},
+            { "data": "message_display"},
+            { "data": "user_name"}
+        ],
+        // กำหนดการแสดงผล Drop down เมนู
+        "aLengthMenu": [
+                [5, 10, 15, 25, 50, 100, -1],
+                [5, 10, 15, 25, 50, 100, "All"]
+            ],
+        "iDisplayLength": 5,
+        // กำหนดการแสดงผลบน label
+        "oLanguage": {
+                "sLengthMenu": "_MENU_ Records per page",
+                "sInfo": "_START_ - _END_ of _TOTAL_",
+                "sInfoEmpty": "0 - 0 of 0",
+                "oPaginate": {
+                    "sPrevious": "Prev",
+                    "sNext": "Next"
+                }
+        },
+        // กำหนดคอลัมภ์ให้สามารถ sort ได้หรือไม่
+        "aoColumnDefs": [
+                {
+                    'bSortable': false,
+                    'aTargets': [1]
+                },{
+                    'bSortable': true,
+                    'aTargets': [2]
+                },{ 
+                    "visible": true,  
+                    "targets": [2] 
+                },{
+                    // The `data` parameter refers to the data for the cell (defined by the
+                    // `data` option, which defaults to the column being worked with, in
+                    // this case `data: 0`.
+                    "render": function ( data, type, row ) {
+                        //console.log(data);
+                        //console.log(type);
+                        //console.log(row);
+                        //console.log(row.user_name);
+
+                        var tmpListASK = "";
+                        //tmpListASK += '<tr class="table-flag-blue">';
+                        // tmpListASK += '<td>' + (i+1) + '</td>';
+                        //tmpListASK += '<td>';
+                        tmpListASK = '<strong>' + row.user_display + '</strong> | ' + row.creation_time;
+                        tmpListASK += '<p>' + row.message_display + '</p>';
+                        //tmpListASK += '</td>';
+                        // tmpListASK += '<td class="text-center">';
+                        // tmpListASK += '7 <a href="#"><i class="fa fa-thumbs-o-up"></i></a>';
+                        // tmpListASK += '</td>';
+                        //tmpListASK += '</tr>';
+
+                        //return data +' ('+ row.user_name + ')';
+                        return tmpListASK;
+                    },
+                    "targets": 1
+                },{
+                    // The `data` parameter refers to the data for the cell (defined by the
+                    // `data` option, which defaults to the column being worked with, in
+                    // this case `data: 0`.
+                    "render": function ( data, type, row ) {
+                        var tmpListASK = "";
+                        //tmpListASK = '<td class="text-center">';
+                        tmpListASK = '<span>127 <a href="#"><i class="fa fa-thumbs-o-up"></i></a></span>';
+                        //tmpListASK += '</td>';
+
+                        //return data +' ('+ row.user_name + ')';
+                        return tmpListASK;
+                    },
+                    "targets": 2
+                },{ 
+                    "sClass": "text-center", "aTargets": [2] 
+                }
+        ],
+        // กำหนดการแสดงผลแต่ละคอลัมภ์
+        // "columnDefs": [ {
+        //     "targets": -1,
+        //     "data": null,
+        //     "defaultContent": "<button>Click!</button>"
+        // } ]
+        // "columnDefs": [ {
+        //     "render": function ( data, type, col ) {
+        //         console.log(data);
+        //         return data +' ('+ col[1]+')';
+        //     },
+        //     "targets": 0
+        // } ]
+    });
+
+
+    $('#AskDataTable tbody').on( 'click', 'a', function (event) {
+        event.preventDefault();
+        //event.stopPropagation();
+
+        //console.log(AskDataTable.row($(this).parents('tr')).data());
+
+        var row = AskDataTable.row($(this).parents('tr')).data();
+        alert( 'You clicked on ' + row.id + '\'s row' );
+
+        //return false;
+        
+    } );
+
+}
+
+

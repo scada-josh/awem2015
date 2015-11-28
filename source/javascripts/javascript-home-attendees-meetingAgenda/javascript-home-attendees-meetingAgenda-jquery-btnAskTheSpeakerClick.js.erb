@@ -21,25 +21,83 @@
                          reverse: false // false is the default
                        });
 
-                      // $.ajax({
-                      //   url: '../../../../api/loginManager/logout/',
-                      //   type: 'POST',
-                      //   contentType: 'application/json',
-                      //   dataType: 'json',
-                      //   cache: false,
-                      //   //async: false,
-                      //   success: function(data) {
-                      //       //console.log(data);
 
-                      //       //window.location.href = '../Admin/';
-                      //       var url = '../../../Login/';
-                      //       $(location).attr('href',url);
+                      /* ************************* */
+                      /* เริ่มกระบวนการเรียกใช้งาน RESTful Web Service */
+                      /* ************************* */
 
-                      //       console.log(window.location.pathname);
+                      var txtASK = $('#txtAskTheSpeaker').val();
+                      var postData = {
+                                    "agendaID": "agenda-0001-0001",
+                                    "userName": "Josh",
+                                    "userDisplay": "Josh",
+                                    "messageDisplay": txtASK
+                                  }
 
-                      //   },
-                      //   error: function(jqXHR, textStatus, errorThrown){
-                      //           alert('init error: ' + textStatus);
-                      //       }
-                      //   });
+                      $.ajax({
+                        url: '../../../../api/askManager/insertAsk/',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        cache: false,
+                        data: JSON.stringify(postData),
+                        async: true,
+                        success: function(data) {
+                            //console.log(data);
+                            //renderListASK(data);
+                            AskDataTable.ajax.reload()
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                                alert('init error: ' + textStatus);
+                            }
+                        });
+
+
+
+
+                      // function renderListASK(data) {
+                      //   //console.log(data);
+
+                      //     var tmpListASK = "";
+
+                      //     /* สร้าง THEAD */
+                      //     tmpListASK += '<tr>';
+                      //     tmpListASK += '<th style="width:18px">No.</th>';
+                      //     tmpListASK += '<th>Ask...</th>';
+                      //     tmpListASK += '<th class="text-center" style="width:18px"> </th>';
+                      //     tmpListASK += '</tr>';
+
+                      //     /* สร้าง BODY */
+                      //     /* สร้าง BODY */
+                      //     for (var i = 0; i < data.count; i++) {
+
+                      //         tmpListASK += '<tr class="table-flag-blue">';
+                      //         tmpListASK += '<td>' + (i+1) + '</td>';
+                      //         tmpListASK += '<td>';
+                      //         tmpListASK += '<strong>' + data.rows[i].user_display + '</strong> | ' + data.rows[i].creation_time;
+                      //         tmpListASK += '<p>' + data.rows[i].message_display + '</p>';
+                      //         tmpListASK += '</td>';
+                      //         tmpListASK += '<td class="text-center">';
+                      //         tmpListASK += '7 <a href="#"><i class="fa fa-thumbs-o-up"></i></a>';
+                      //         tmpListASK += '</td>';
+                      //         tmpListASK += '</tr>';
+
+                      //     }
+
+                      //   $('#table1').html(tmpListASK);
+
+                      //   $('#table1').DataTable().ajax.reload();
+
+
+                      // }
+
+
+
+
+
                 });
+
+
+
+
+

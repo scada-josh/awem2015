@@ -1,0 +1,20 @@
+function gritterAdd() {
+
+            $.gritter.add({
+            // (string | mandatory) the heading of the notification
+            title: 'Connection Lost!',
+            // (string | mandatory) the text inside the notification
+            text: 'Please contact the administrator.',
+            // (string | optional) the image to display on the left
+            image: "<%= '../../../../../' + images_dir + '/images-flaty_theme/img/awem2015/Icon-administrator-70x68.png' %>",
+            // (bool | optional) if you want it to fade out on its own or just sit there
+            sticky: true,
+            // (int | optional) the time you want it to be alive for before fading out
+            time: '',
+            //class_name: 'gritter-light'
+            class_name: 'my-sticky-class'
+        });
+
+        return false;
+        
+}
