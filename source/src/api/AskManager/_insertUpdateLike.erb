@@ -1,14 +1,14 @@
 	/**
 	 *
-	 * @apiName ListAsk
+	 * @apiName InsertUpdateLike
 	 * @apiGroup ASK Manager
 	 * @apiVersion 0.1.0
 	 *
-	 * @api {post} /askManager/listAsk/ List ASK
-	 * @apiDescription คำอธิบาย : ในส่วนนี้จะมีหน้าที่แสดงรายการคำถามทั้งหมด ของแต่ละ Agenda ID
+	 * @api {post} /askManager/insertUpdateLike/ Insert/Update Like
+	 * @apiDescription คำอธิบาย : ในส่วนนี้จะมีหน้าที่เพิ่มจำนวน Like เข้าไปในระบบ
 	 *
 	 *
-	 * @apiSampleRequest /askManager/listAsk/
+	 * @apiSampleRequest /askManager/insertUpdateLike/
 	 *
 	 * @apiSuccess {String} msg แสดงข้อความทักทายผู้ใช้งาน
 	 *
@@ -25,7 +25,7 @@
 	 *     }
 	 *
 	 */
-	 function listAsk($app, $pdo, $db) {
+	 function insertUpdateLike($app, $pdo, $db) {
 
 	 	/* ************************* */
         /* เริ่มกระบวนการรับค่าพารามิเตอร์จากส่วนของ Payload ซึ่งอยู่ในรูปแบบ JSON */
@@ -43,56 +43,57 @@
 	        $result = json_decode($request->getBody());
 
 	        /* receive request */
-	        $postAgendaID = $result->agendaID;
-	        
+	        $postAskID = $result->askID;
+	        $postUserNameLiked = $result->userNameLiked;
 
 
-		} else if ($ContetnType == "application/x-www-form-urlencoded") {
+		} else if ($ContetnType == "application/x-www-form-urlencoded"){
 
 		    //$userID = $app->request()->params('userID_param');
 		    //$userID = $app->request()->post('userID_param');
-
-		    $postAgendaID = $app->request()->params('agendaID');
+		    $postAskID = $app->request()->params('askID');
+		    $postUserNameLiked = $app->request()->params('userNameLiked');
 
 		} else {
 			// application/x-www-form-urlencoded; charset=UTF-8"
-			$postAgendaID = $app->request()->params('agendaID');
+			$postAskID = $app->request()->params('askID');
+			$postUserNameLiked = $app->request()->params('userNameLiked');
 		}
-
-		//$postAgendaID = "agenda-0001-0001";
 
 		/* ************************* */
 	 	/* เริ่มกระบวนการเชื่อมต่อกับฐานข้อมูล MySQL */
 	 	/* ************************* */
 	 	$reports = array();
 
-		$results = $db->ask_tb->where("agenda_id = ?", $postAgendaID)->order("creation_time ASC");
+  		// $query_result = $db->who_like_tb->insert(array(
+		//     "ask_id" => $postAskID,
+		//     "user_name_liked" => $postUserNameLiked
+		// ));
 
-		foreach ($results as $result) {
+		$query_result = $db->who_like_tb->insert_update(
+			array("userNameLiked_askID" => $postUserNameLiked."_".$postAskID), // unique key
+			array("userNameLiked_askID" => $postUserNameLiked."_".$postAskID, "ask_id" => $postAskID, "user_name_liked" => $postUserNameLiked), // insert values if the row doesn't exist
+			array("modification_time" => date('Y-m-d H:i:s'))  // update values otherwise	
+		);
 
-			$numLiked = $db->who_like_tb->where("ask_id = ?", $result["id"])->count("*");
-
-
-			$reports[] = array(
-				"id" => $result["id"],
-				"agenda_id" => $result["agenda_id"],
-				"user_name" => $result["user_name"],
-				"user_display" => $result["user_display"],
-				"creation_time" => $result["creation_time"],
-				"message_display" => $result["message_display"],
-				"numLiked" => $numLiked
-				);
+		if ($query_result == 1) {
+			$resultAction = "insert";
+		} else {
+			$resultAction = "update";
 		}
+		// $query_result = $db->table_game_collectors()->insert_update(
+		// 				    array("unique_key" => $postEventID."_".$postBoothID."_".$postUserID), // unique key
+		// 				    array("event_id" => $postEventID, "booth_id" => $postBoothID, "user_id" => $postUserID, "modified_date" => date('Y-m-d H:i:s')), // insert values if the row doesn't exist
+		// 				    array("modified_date" => date('Y-m-d H:i:s')) // update values otherwise
+		// 				);
 
-		$rowCount = count($results);
 
 		/* ************************* */
 	    /* เริ่มกระบวนการส่งค่ากลับ */
 	    /* ************************* */
 	    $resultText = "success";
 	    
-		$reportResult = array("result" =>  $resultText, "count"=>$rowCount, "rows" => $reports);
-
+		$reportResult = array("result" =>  $resultText, "action" => $resultAction, "result" => $query_result);
 	  	
 	  	$app->response()->header("Content-Type", "application/json");
 	    echo json_encode($reportResult);

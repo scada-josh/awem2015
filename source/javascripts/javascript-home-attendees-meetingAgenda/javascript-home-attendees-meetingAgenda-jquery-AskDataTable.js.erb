@@ -90,7 +90,7 @@ if (jQuery().dataTable) {
                     "render": function ( data, type, row ) {
                         var tmpListASK = "";
                         //tmpListASK = '<td class="text-center">';
-                        tmpListASK = '<span>127 <a href="#"><i class="fa fa-thumbs-o-up"></i></a></span>';
+                        tmpListASK = '<span>' + row.numLiked + ' <a href="#"><i class="fa fa-thumbs-o-up"></i></a></span>';
                         //tmpListASK += '</td>';
 
                         //return data +' ('+ row.user_name + ')';
@@ -124,9 +124,41 @@ if (jQuery().dataTable) {
         //console.log(AskDataTable.row($(this).parents('tr')).data());
 
         var row = AskDataTable.row($(this).parents('tr')).data();
-        alert( 'You clicked on ' + row.id + '\'s row' );
+        //alert( 'You clicked on ' + row.id + '\'s row' );
 
-        //return false;
+          /* ************************* */
+          /* เริ่มกระบวนการเรียกใช้งาน RESTful Web Service */
+          /* ************************* */
+
+          var postData = {
+                          "askID": row.id,
+                          "userNameLiked": row.user_name
+                         }
+
+          $.ajax({
+            url: '../../../../api/askManager/insertUpdateLike/',
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            cache: false,
+            data: JSON.stringify(postData),
+            async: true,
+            success: function(data) {
+                //console.log(data);
+                //console.log(data.action);
+                if (data.action == "insert") {
+                    AskDataTable.ajax.reload(null, false);
+                    gritterShowResultInfo("Infomation", "Save already!!!");
+                } else if (data.action == "update") {
+                    gritterShowResultInfo("Infomation", "You have been like it, already.!!!");
+                }
+
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                    alert('init error: ' + textStatus);
+                }
+            });
+
         
     } );
 

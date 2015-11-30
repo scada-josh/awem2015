@@ -57,6 +57,7 @@ layout: "layout-api"
     /* Ask manager */
     $app->post('/askManager/insertAsk/',function() use ($app, $pdo, $db) { insertAsk($app, $pdo, $db); });
     $app->post('/askManager/listAsk/',function() use ($app, $pdo, $db) { listAsk($app, $pdo, $db); });
+    $app->post('/askManager/insertUpdateLike/',function() use ($app, $pdo, $db) { insertUpdateLike($app, $pdo, $db); });
 
 
 	$app->run();
@@ -73,6 +74,7 @@ layout: "layout-api"
     /* Ask Manager Partial */
     <%= partial "/AskManager/_insertAsk" %>
     <%= partial "/AskManager/_listAsk" %>
+    <%= partial "/AskManager/_insertUpdateLike" %>
 
     
 ?>

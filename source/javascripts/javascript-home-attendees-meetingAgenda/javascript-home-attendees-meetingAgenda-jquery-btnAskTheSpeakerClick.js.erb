@@ -45,7 +45,7 @@
                         success: function(data) {
                             //console.log(data);
                             //renderListASK(data);
-                            AskDataTable.ajax.reload()
+                            AskDataTable.ajax.reload(null, false);
                         },
                         error: function(jqXHR, textStatus, errorThrown){
                                 alert('init error: ' + textStatus);
